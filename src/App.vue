@@ -8,6 +8,7 @@
       <li v-for="number in numbers" :key="number"><h1>{{number}}</h1></li>
     </ul>
     <h1>{{person.name}}</h1>
+    <h1>X:{{x}}, Y{{y}}</h1>
     <button @click="increase">👍+1</button>
     <br>
     <button @click="updateGreeting">Update Title</button>
@@ -16,7 +17,9 @@
 
 <script lang="ts">
 // 简单计数器
-import { ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered, watch } from 'vue'
+import { ref, computed, reactive, toRefs, onUpdated, onRenderTriggered, watch, onMounted, onUnmounted } from 'vue'
+// 引用函数
+import useMousePosistion from './hooks/useMousePosition'
 // 新建一个类型
 interface DataProps {
   count: number;
@@ -50,6 +53,41 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
+    const data: DataProps = reactive({
+      count: 0,
+      increase: () => { data.count++ },
+      // typescript报错：类型错误=>computed回调中使用data.count会推断为darta:any：需要新建一个类型
+      double: computed(() => data.count * 2),
+      numbers: [0, 1, 2],
+      person: {}
+    })
+    const greetings = ref('')
+    const updateGreeting = () => {
+      greetings.value += 'Hello!'
+    }
+    const { x, y }= useMousePosistion() // X、Y均为Ref，已实现代码重用
+    // // [弃用]已在函数中抽离出具体的功能
+    // // 捕捉当前鼠标坐标：两个响应式对象记录x、y位置
+    // // 初始化
+    // const x = ref(0)
+    // const y = ref(0)
+    // // 事件点击时更新：点击事件MouseEvent
+    // const updateMouse = (e: MouseEvent) => {
+    //   x.value = e.pageX
+    //   y.value = e.pageY
+    // }
+    // // 添加事件
+    // onMounted(() => {
+    //   document.addEventListener('click', updateMouse)
+    // })
+    // onUnmounted(() => {
+    //   document.removeEventListener('click', updateMouse)
+    // })
+    watch([greetings, () => data.count], (newValue, oldValue) => {
+      console.log('old', oldValue)
+      console.log('new', newValue)
+      document.title = 'updated' + greetings.value + data.count
+    })
     // 初始化打印
     onMounted(() => {
       console.log('mounted')
@@ -63,18 +101,6 @@ export default {
     onRenderTriggered((event) => {
       console.log(event)
     })
-    const data: DataProps = reactive({
-      count: 0,
-      increase: () => { data.count++ },
-      // typescript报错：类型错误=>computed回调中使用data.count会推断为darta:any：需要新建一个类型
-      double: computed(() => data.count * 2),
-      numbers: [0, 1, 2],
-      person: {}
-    })
-    const greetings = ref('')
-    const updateGreeting = () => {
-      greetings.value += 'Hello!'
-    }
     // 回调函数分别指代新的值和旧的值
     // 若想watch多个值则[]双管齐下，data为reactive对象为Proxy对调试不友好则取data.count，取出来warn:（拿出来是number) watch必须是一个响应式对象和[function]即可
     watch([greetings, () => data.count], (newValue, oldValue) => {
@@ -97,7 +123,9 @@ export default {
       // toRefs解决：接受一个reactive对象作为参数返回一个普通的对象（Ref类型）
       ...refData, // 展开的每一项即为响应式对象
       greetings,
-      updateGreeting
+      updateGreeting,
+      x,
+      y,
       // // Vue3：精确控制哪些属性和方法可以被导出使用
       // // 更好追踪引用和更新的情况
       // count,

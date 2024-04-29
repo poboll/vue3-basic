@@ -164,3 +164,12 @@ errorCaptured -> onErrorCaptured
 // added: Debug观察数据变化
 onRenderTracked
 onRenderTriggered
+
+使用CompositionAPI解决：
+1. 相关feature结合在一起
+2. 更高灵活度
+
+模块化&逻辑重用的方法
+1. 鼠标追踪器
+   捕捉当前鼠标坐标：两个响应式对象记录x、y位置
+   除了在APP页面中获取，在其他组件重用：hooks
