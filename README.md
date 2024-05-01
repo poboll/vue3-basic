@@ -1,4 +1,3 @@
-```markdown
 ## 初识 Vue3.0：新特性
 
 ### Vue3新特性巡礼
@@ -83,7 +82,7 @@ pnpm run build
 ```
 pnpm run lint
 ```
-
+ 
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
