@@ -188,3 +188,22 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 1. 鼠标追踪器
    - 捕捉当前鼠标坐标
+
+2. 网页状态加载
+   实现异步请求Axios
+   ```
+   // Make a request for a user with a given ID
+   axios.get('/user?ID=12345')
+   .then(function (response) {
+      // handle success
+      console.log(response);
+   })
+   .catch(function (error) {
+      // handle error
+      console.log(error);
+   })
+   .finally(function () {
+      // always executed
+   });
+   ```
+   [https://dog.ceo/dog-api/](https://dog.ceo/api/breeds/image/random)获取狗狗图片

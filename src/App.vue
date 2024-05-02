@@ -4,6 +4,9 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <h1 v-if="loading">Loading!...</h1>
+    <!-- ':src'将Vue实例中的表达式结果作为实际的src属性值进行渲染 -->
+    <img v-if="loaded" :src="result.message" >
     <ul>
       <li v-for="number in numbers" :key="number"><h1>{{number}}</h1></li>
     </ul>
@@ -20,6 +23,7 @@
 import { ref, computed, reactive, toRefs, onUpdated, onRenderTriggered, watch, onMounted, onUnmounted } from 'vue'
 // 引用函数
 import useMousePosistion from './hooks/useMousePosition'
+import useURLLoader from './hooks/useURLLoader'
 // 新建一个类型
 interface DataProps {
   count: number;
@@ -66,6 +70,7 @@ export default {
       greetings.value += 'Hello!'
     }
     const { x, y }= useMousePosistion() // X、Y均为Ref，已实现代码重用
+    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
     // // [弃用]已在函数中抽离出具体的功能
     // // 捕捉当前鼠标坐标：两个响应式对象记录x、y位置
     // // 初始化
@@ -126,6 +131,9 @@ export default {
       updateGreeting,
       x,
       y,
+      result,
+      loading,
+      loaded
       // // Vue3：精确控制哪些属性和方法可以被导出使用
       // // 更好追踪引用和更新的情况
       // count,
