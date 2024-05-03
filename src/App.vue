@@ -6,7 +6,10 @@
     <h1>{{greetings}}</h1>
     <h1 v-if="loading">Loading!...</h1>
     <!-- ':src'将Vue实例中的表达式结果作为实际的src属性值进行渲染 -->
-    <img v-if="loaded" :src="result.message" >
+    <!-- 狗狗 -->
+    <!-- <img v-if="loaded" :src="result.message" > -->
+    <!-- 猫猫 -->
+    <img v-if="loaded" :src="result[0].url" >
     <ul>
       <li v-for="number in numbers" :key="number"><h1>{{number}}</h1></li>
     </ul>
@@ -31,6 +34,17 @@ interface DataProps {
   increase: () => void;
   numbers: number[];
   person: { name?: string };
+}
+// Dog API
+interface DogResult {
+  message: string;
+  status: string;
+}
+interface CatResult {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
 }
 export default {
   name: 'App',
@@ -70,7 +84,19 @@ export default {
       greetings.value += 'Hello!'
     }
     const { x, y }= useMousePosistion() // X、Y均为Ref，已实现代码重用
-    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
+    // const { result, loading, loaded } = useURLLoader<DogResult>('https://dog.ceo/api/breeds/image/random')
+    const { result, loading, loaded } = useURLLoader<CatResult[]>('https://api.thecatapi.com/v1/images/search?limit=1')
+    watch(result, () => {
+      // 需要传入相关类型[泛型]
+      // console.log(result.value.message)
+      // 联合类型首先判断是否存在
+      if(result.value) {
+        // 狗狗
+        // console.log('value', result.value.message)
+        // 猫猫
+        console.log('value', result.value[0].url)
+      }
+    })
     // // [弃用]已在函数中抽离出具体的功能
     // // 捕捉当前鼠标坐标：两个响应式对象记录x、y位置
     // // 初始化

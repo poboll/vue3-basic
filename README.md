@@ -207,3 +207,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    });
    ```
    [https://dog.ceo/dog-api/](https://dog.ceo/api/breeds/image/random)获取狗狗图片
+
+   模块化结合typescript-泛型改造`<T | null>`
+   > 发送任意种类的异步请求
+   
+   [https://api.thecatapi.com/v1/images/search?limit=1](https://api.thecatapi.com/v1/images/search?limit=1)
+   获取猫猫图片
