@@ -213,3 +213,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    
    [https://api.thecatapi.com/v1/images/search?limit=1](https://api.thecatapi.com/v1/images/search?limit=1)
    获取猫猫图片
+
+## Typescript对Vue3的加持
+   新的方法来定义Component
+   使用`defineComponent`包裹，对传入对象有了新的方法

@@ -31,14 +31,26 @@
 </template>
 
 <script lang="ts">
+// 实现Typescript加持
 import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
-});
+const component = 
+  defineComponent({
+    name: 'HelloWorld',
+    props: {
+      msg: {
+        required: true,
+        type: String
+      }
+    },
+    setup(props, context) {
+      // 可以接收参数
+      // props响应式对象可以查看其数值
+      props.msg
+      context.attrs
+      // vue2中方法，会自动同步到最新的值
+    }
+  })
+export default component;
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
