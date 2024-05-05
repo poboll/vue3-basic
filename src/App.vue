@@ -4,6 +4,20 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <p>{{error}}</p>
+    <Suspense>
+      <template #default>
+        <!-- 需要等待加载的异步内容 -->
+        <div>
+          <async-show />
+          <dog-show />
+        </div>
+      </template>
+      <template #fallback>
+        <!-- 加载时显示的内容 -->
+        <h1>Loading !...</h1>
+      </template>
+    </Suspense>
     <button @click="openModal">Open Modal</button>
     <br>
     <h1 v-if="loading">Loading!...</h1>
@@ -27,11 +41,13 @@
 
 <script lang="ts">
 // 简单计数器
-import { ref, computed, reactive, toRefs, onUpdated, onRenderTriggered, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, reactive, toRefs, onUpdated, onRenderTriggered, watch, onMounted, onUnmounted, onErrorCaptured } from 'vue'
 // 引用函数
 import useMousePosistion from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLLoader'
 import Modal from './components/ModalWindow.vue';
+import AsyncShow from './components/AsyncShow.vue';
+import DogShow from './components/DogShow.vue' 
 // 新建一个类型
 interface DataProps {
   count: number;
@@ -52,8 +68,12 @@ interface CatResult {
   height: number;
 }
 export default {
-  components: { Modal },
   name: 'App',
+  components: { 
+    Modal,
+    AsyncShow,
+    DogShow,
+  },
   // Vue2
   // data() {
   //   return {
@@ -66,6 +86,12 @@ export default {
   //   }
   // }
   setup() {
+    // 捕获Suspense错误
+    const error = ref(null)
+    onErrorCaptured((e: any) => {
+      error.value = e
+      return true
+    })
     // 准备 生命周期之前
     // 响应式对象
     // 使用reactive包裹对象
@@ -176,7 +202,8 @@ export default {
       loaded,
       modalIsOpen,
       openModal,
-      onModalClose
+      onModalClose,
+      error,
       // // Vue3：精确控制哪些属性和方法可以被导出使用
       // // 更好追踪引用和更新的情况
       // count,

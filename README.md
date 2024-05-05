@@ -218,7 +218,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    新的方法来定义Component
    使用`defineComponent`包裹，对传入对象有了新的方法
 
-## Teleport（瞬间移动、传送）
+## Teleport-瞬间移动
    组件渲染时需显示全局对话窗：传统方式包括<Dialog>组件
    [Frame](https://whimsical.com/vue3-Djb2TcWsLTPeapFdM3NaX@6HYTAunKLgTVBT1HvPSHGQiwFkSpdniHfqo4bdnNs1KBCyM)
    - Dialog被包裹在其他组件之中容易被干扰
@@ -231,3 +231,51 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    优化全局提示框
    [Frame](https://whimsical.com/vue3-Djb2TcWsLTPeapFdM3NaX@or4CdLRbgiwKT1STACXYRgNpC1GdpeXRrDRZwtgYf)
    打开关闭&slot实现自定义内容
+
+
+## Suspense-异步请求好帮手
+   内置组件：异步请求
+   要使用Suspense，要返回一个promise
+   使用异步请求展示个性化的定制
+   ```vue
+   <template>
+    <h1>{{result}}</h1>
+   </template>
+   <script lang="ts">
+   import { defineComponent } from 'vue'
+
+   export default defineComponent({
+      setup() {
+         // 由于return异步可以用Suspense处理
+         return new Promise((resolve) => {
+               setTimeout(() => {
+                  // 三秒后返回
+                  return resolve({
+                     result: 42
+                  })
+               }, 3000)
+         })
+      },
+   })
+   </script>
+   ```
+   语法糖：`async`包裹
+   ```vue
+   <template>
+   <img :src="result && result.message">
+   </template>
+   <script>
+   import { defineComponent } from 'vue'
+
+   export default defineComponent({
+      async setup() {
+         const rawData = await axios.get('https://dog.ceo/api/breeds/image/random')
+         return {
+               result: rawData.data
+         }
+      },
+   })
+   </script>
+   ```
+   抓取Suspense错误
+   on即可在setup()使用
