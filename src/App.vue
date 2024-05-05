@@ -4,6 +4,8 @@
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <h1>{{greetings}}</h1>
+    <button @click="openModal">Open Modal</button>
+    <br>
     <h1 v-if="loading">Loading!...</h1>
     <!-- ':src'将Vue实例中的表达式结果作为实际的src属性值进行渲染 -->
     <!-- 狗狗 -->
@@ -15,6 +17,8 @@
     </ul>
     <h1>{{person.name}}</h1>
     <h1>X:{{x}}, Y{{y}}</h1>
+    <!-- 直接使用嵌套在其他结构中 -->
+    <modal :isOpen="modalIsOpen" @close-modal="onModalClose"> My Modal !!!!</modal>
     <button @click="increase">👍+1</button>
     <br>
     <button @click="updateGreeting">Update Title</button>
@@ -27,6 +31,7 @@ import { ref, computed, reactive, toRefs, onUpdated, onRenderTriggered, watch, o
 // 引用函数
 import useMousePosistion from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLLoader'
+import Modal from './components/ModalWindow.vue';
 // 新建一个类型
 interface DataProps {
   count: number;
@@ -47,6 +52,7 @@ interface CatResult {
   height: number;
 }
 export default {
+  components: { Modal },
   name: 'App',
   // Vue2
   // data() {
@@ -142,6 +148,14 @@ export default {
     data.numbers[0] = 5
     data.person.name = 'viking'
     const refData = toRefs(data)
+    // 响应式对象控制全局提示框是否显示
+    const modalIsOpen = ref(false)
+    const openModal = () => {
+      modalIsOpen.value = true
+    }
+    const onModalClose = () => {
+      modalIsOpen.value = false
+    }
     return {
       // 使用reactive包裹对象
       // data在template需要data.
@@ -159,7 +173,10 @@ export default {
       y,
       result,
       loading,
-      loaded
+      loaded,
+      modalIsOpen,
+      openModal,
+      onModalClose
       // // Vue3：精确控制哪些属性和方法可以被导出使用
       // // 更好追踪引用和更新的情况
       // count,

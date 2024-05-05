@@ -217,3 +217,17 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ## Typescript对Vue3的加持
    新的方法来定义Component
    使用`defineComponent`包裹，对传入对象有了新的方法
+
+## Teleport（瞬间移动、传送）
+   组件渲染时需显示全局对话窗：传统方式包括<Dialog>组件
+   [Frame](https://whimsical.com/vue3-Djb2TcWsLTPeapFdM3NaX@6HYTAunKLgTVBT1HvPSHGQiwFkSpdniHfqo4bdnNs1KBCyM)
+   - Dialog被包裹在其他组件之中容易被干扰
+   - 样式也在其他组件中，容易变得混乱
+
+   渲染在顶层另外一个DOM组件上
+   [Frame](https://whimsical.com/vue3-Djb2TcWsLTPeapFdM3NaX@or4CdLRbgiuiJc7Ut2HcPa9wiwPqzQuZ7xJKpBCzB)
+   Teleport包裹
+
+   优化全局提示框
+   [Frame](https://whimsical.com/vue3-Djb2TcWsLTPeapFdM3NaX@or4CdLRbgiwKT1STACXYRgNpC1GdpeXRrDRZwtgYf)
+   打开关闭&slot实现自定义内容
