@@ -279,3 +279,26 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    ```
    抓取Suspense错误
    on即可在setup()使用
+
+## Global API Change-全局API修改
+main.ts采用一个API:CreateApp创建一个对象并且挂载到节点
+```
+import { createApp } from 'vue'
+import App from './App.vue'
+
+// 创建App的实例并绑定在DOM节点上
+createApp(App).mount('#app')
+```
+
+### 全局配置：Vue.config->app.config
+config.productionTip 被删除
+config.ignoredElements改名为config.isCustomElement
+config.keyCodes 被删除
+
+### 全局注册类API
+Vue.component -> app.component
+Vue.directive -> app.directive
+
+### 行为扩展类API
+Vue.mixin -> app.mixin
+Vue.use -> app.use
